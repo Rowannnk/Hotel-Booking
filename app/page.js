@@ -74,25 +74,25 @@ const Home = () => {
           <div className="border p-4 rounded-lg">
             <img
               src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
-              alt="Delux Room"
+              alt="Suite Room"
               className="w-full h-40 object-cover rounded-lg mb-4"
             />
             <h2 className="text-2xl font-bold">Delux Room</h2>
             <p className="text-gray-600">Delux</p>
             <p className="text-lg text-gray-900 font-semibold">
-              2000 Baht/night
+              3000 Baht/night
             </p>
           </div>
           <div className="border p-4 rounded-lg">
             <img
               src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
-              alt="Delux Room"
+              alt="President Room"
               className="w-full h-40 object-cover rounded-lg mb-4"
             />
             <h2 className="text-2xl font-bold">Delux Room</h2>
             <p className="text-gray-600">Delux</p>
             <p className="text-lg text-gray-900 font-semibold">
-              2000 Baht/night
+              5000 Baht/night
             </p>
           </div>
         </div>
