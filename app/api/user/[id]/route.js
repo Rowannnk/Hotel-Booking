@@ -1,6 +1,6 @@
 // pages/api/user/getUserById/[id].js
 
-import { Users } from '@/models/user'; // Ensure the correct import path
+import { Users } from '@/app/models/user'
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {

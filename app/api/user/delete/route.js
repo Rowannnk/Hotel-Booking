@@ -1,7 +1,7 @@
-import { Users } from '@/models/user';
+import { Users } from '@/app/models/user';
 import { NextResponse } from 'next/server';
 
-export async function POST(request) {
+export async function DELETE(request) {
     const body = await request.json();
     const { userid } = body;
 
