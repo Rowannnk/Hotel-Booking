@@ -1,28 +1,52 @@
-"use client"; // For Next.js 13 with app directory
+"use client"; // Ensures that this component is rendered on the client side
 
 import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null); // Update error state to store error details
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password === confirmPassword) {
-      alert("Registration successful!");
-    } else {
+  const register = async () => {
+    if (password !== confirmPassword) {
       alert("Passwords do not match");
+      return;
+    }
+
+    const user = { name, email, password }; // Do not include confirmPassword
+
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/user/register", user);
+      console.log(response.data); // Log the response data for debugging
+      setLoading(false);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      router.push("/login");
+    } catch (error) {
+      console.error(error.response?.data || error.message); // Log the error response or message
+      setLoading(false);
+      setError(error.response?.data?.message || "An error occurred"); // Show specific error message
     }
   };
 
   return (
     <div className="bg-gray-100 p-8 h-screen">
       <div className="max-w-[50%] mx-auto bg-white p-8 rounded-lg">
+        {loading && <p className="text-center text-red-500">Loading...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+
         <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           {[
             {
               label: "Name",
@@ -66,14 +90,14 @@ const Register = () => {
               </div>
             )
           )}
+        </div>
 
-          <button
-            type="submit"
-            className="w-full bg-[#a08448] text-white py-2 px-4 rounded hover:bg-[#8b6d40]"
-          >
-            Register
-          </button>
-        </form>
+        <button
+          onClick={register}
+          className="w-full bg-[#a08448] text-white py-2 px-4 rounded hover:bg-[#8b6d40]"
+        >
+          Register
+        </button>
       </div>
     </div>
   );
