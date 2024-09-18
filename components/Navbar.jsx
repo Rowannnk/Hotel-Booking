@@ -1,11 +1,28 @@
-"use client";
-import React, { useState } from "react";
+"use client"; // Ensures that this component is rendered on the client side
+
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("currentUser");
+    setUser(null);
+    router.push("/login"); // Use router.push for client-side navigation
   };
 
   return (
@@ -21,69 +38,72 @@ const Navbar = () => {
             <div className="flex items-center">
               <div className="hidden md:block">
                 <ul className="flex items-center space-x-4">
-                  <div className="relative">
-                    <button
-                      className="text-gray-700 font-medium hover:text-gray-900 flex items-center"
-                      id="dropdownMenuButton"
-                      onClick={toggleDropdown}
-                    >
-                      {/* {user.name} */}I am Nigga
-                      <svg
-                        className={`ml-2 h-4 w-4 transform transition-transform duration-200 ${
-                          isDropdownOpen ? "rotate-90" : "rotate-0"
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+                  {user ? (
+                    <div className="relative">
+                      <button
+                        className="text-gray-700 font-medium hover:text-gray-900 flex items-center"
+                        id="dropdownMenuButton"
+                        onClick={toggleDropdown}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 12h14M12 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
-                    {isDropdownOpen && (
-                      <div
-                        className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <a
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          href="/profile"
+                        {user.name}
+                        <svg
+                          className={`ml-2 h-4 w-4 transform transition-transform duration-200 ${
+                            isDropdownOpen ? "rotate-90" : "rotate-0"
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          Profile
-                        </a>
-                        <a
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          href="#"
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 12h14M12 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
+                      {isDropdownOpen && (
+                        <div
+                          className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
+                          aria-labelledby="dropdownMenuButton"
                         >
-                          Logout
+                          <a
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                            href="/profile"
+                          >
+                            Profile
+                          </a>
+                          <a
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                            href="#"
+                            onClick={logout}
+                          >
+                            Logout
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <li className="nav-item">
+                        <a
+                          className="text-gray-700 font-medium hover:text-gray-900"
+                          href="/register"
+                        >
+                          Register
                         </a>
-                      </div>
-                    )}
-                  </div>
-
-                  <>
-                    <li className="nav-item">
-                      <a
-                        className="text-gray-700 font-medium hover:text-gray-900"
-                        href="/register"
-                      >
-                        Register
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="text-gray-700 font-medium hover:text-gray-900"
-                        href="/login"
-                      >
-                        Login
-                      </a>
-                    </li>
-                  </>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="text-gray-700 font-medium hover:text-gray-900"
+                          href="/login"
+                        >
+                          Login
+                        </a>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
               <div className="-mr-2 flex md:hidden">
