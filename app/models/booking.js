@@ -1,3 +1,5 @@
+"use server";
+
 import mongoose from 'mongoose';
 
 const bookingSchema = mongoose.Schema({
@@ -42,4 +44,4 @@ const bookingSchema = mongoose.Schema({
     timestamps: true,
 });
 
-export const Bookings = mongoose.model('Booking', bookingSchema);
+export const Bookings = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
