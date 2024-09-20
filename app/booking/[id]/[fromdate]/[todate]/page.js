@@ -1,11 +1,11 @@
 "use client";
- 
+
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import StripeCheckout from "react-stripe-checkout";
 import swal from "sweetalert";
 import moment from "moment";
- 
+
 const Booking = ({ params }) => {
   const { fromdate, todate } = params;
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ const Booking = ({ params }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalDays, setTotalDays] = useState(0);
   const router = useRouter();
- 
+
   useEffect(() => {
     if (fromdate && todate) {
       const calculateTotalDays = (fromDateStr, toDateStr) => {
@@ -22,11 +22,11 @@ const Booking = ({ params }) => {
         const toDate = moment(toDateStr, "DD-MM-YYYY");
         return toDate.diff(fromDate, "days") + 1;
       };
- 
+
       setTotalDays(calculateTotalDays(fromdate, todate));
     }
   }, [fromdate, todate]);
- 
+
   useEffect(() => {
     // Hardcoded room data for demonstration
     const fetchRoomData = () => {
@@ -41,16 +41,16 @@ const Booking = ({ params }) => {
         setLoading(false);
       }, 1000); // Simulating network delay
     };
- 
+
     fetchRoomData();
   }, []);
- 
+
   useEffect(() => {
     if (room && totalDays > 0) {
       setTotalAmount(totalDays * room.rentperday);
     }
   }, [room, totalDays]);
- 
+
   async function onToken(token) {
     const bookingDetails = {
       room,
@@ -60,7 +60,7 @@ const Booking = ({ params }) => {
       totalDays,
       token,
     };
- 
+
     try {
       setLoading(true);
       // Simulate booking process
@@ -79,7 +79,7 @@ const Booking = ({ params }) => {
       swal("Oops", "Something Went Wrong", "error");
     }
   }
- 
+
   return (
     <div className="container mx-auto p-6">
       {loading ? (
@@ -177,6 +177,5 @@ const Booking = ({ params }) => {
     </div>
   );
 };
- 
+
 export default Booking;
- 

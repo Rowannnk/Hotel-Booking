@@ -4,14 +4,14 @@ import { Tabs, Tag } from "antd";
 import axios from "axios";
 import swal from "sweetalert";
 import { FaEdit, FaTrash } from "react-icons/fa";
- 
+
 const Admin = () => {
   const [bookings, setBookings] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
- 
+
   // Check if user is admin
   //   useEffect(() => {
   //     if (typeof window !== "undefined") {
@@ -21,7 +21,7 @@ const Admin = () => {
   //       }
   //     }
   //   }, []);
- 
+
   // Fetch data for bookings, rooms, and users
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +44,7 @@ const Admin = () => {
     };
     fetchData();
   }, []);
- 
+
   const deleteRoom = async (roomId) => {
     try {
       await axios.delete(`/api/room/delete/${roomId}`);
@@ -55,7 +55,7 @@ const Admin = () => {
       swal("Error", "Failed to delete room", "error");
     }
   };
- 
+
   return (
     <div className="ml-3 mt-3 mr-3">
       <h1 className="text-center text-3xl">Admin Panel</h1>
@@ -99,7 +99,7 @@ const Admin = () => {
             </div>
           </div>
         </Tabs.TabPane>
- 
+
         {/* Rooms Tab */}
         <Tabs.TabPane tab="Rooms" key="2">
           <div className="row">
@@ -134,7 +134,7 @@ const Admin = () => {
             </div>
           </div>
         </Tabs.TabPane>
- 
+
         {/* Add Rooms Tab */}
         <Tabs.TabPane tab="Add Rooms" key="3">
           <div>
@@ -142,7 +142,7 @@ const Admin = () => {
             {/* Add room form could go here */}
           </div>
         </Tabs.TabPane>
- 
+
         {/* Users Tab */}
         <Tabs.TabPane tab="Users" key="4">
           <div className="row">
@@ -174,5 +174,5 @@ const Admin = () => {
     </div>
   );
 };
- 
+
 export default Admin;

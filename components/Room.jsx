@@ -1,5 +1,5 @@
 import Link from "next/link"; // Use Next.js Link for routing
- 
+
 const Room = ({ room, fromdate, todate }) => {
   return (
     <Link href={`/room/${room._id}`} passHref>
@@ -15,7 +15,7 @@ const Room = ({ room, fromdate, todate }) => {
             <h2 className="text-2xl font-extrabold">{room.name}</h2>
           </div>
         </div>
- 
+
         {/* Room Details */}
         <div className="p-6 space-y-4 flex-grow">
           <div className="flex justify-between items-center border-b pb-2">
@@ -31,7 +31,7 @@ const Room = ({ room, fromdate, todate }) => {
             <span className="text-gray-700">{room.roomtype}</span>
           </div>
         </div>
- 
+
         {/* Centered Book Now Button */}
         <div className="flex justify-center items-center py-4">
           {fromdate && todate && (
@@ -46,6 +46,5 @@ const Room = ({ room, fromdate, todate }) => {
     </Link>
   );
 };
- 
+
 export default Room;
- 
