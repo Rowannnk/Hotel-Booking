@@ -1,14 +1,83 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Room from "../components/Room";
 import { DatePicker } from "antd";
-import "antd/dist/reset.css"; // Import Ant Design styles
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
 const Home = () => {
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [fromdate, setFromdate] = useState("");
+  const [todate, setTodate] = useState("");
+  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [search, setSearch] = useState("");
+  const [type, setType] = useState("all");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("/api/room/rooms"); // Next.js API route
+        setRooms(response.data);
+        setFilteredRooms(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filterRooms = () => {
+    let tempRooms = [...rooms];
+
+    // Filter by date
+    if (fromdate && todate) {
+      tempRooms = tempRooms.filter((room) => {
+        if (room.currentbookings.length === 0) return true;
+
+        return room.currentbookings.every((booking) => {
+          const bookingFromDate = moment(booking.fromdate, "DD-MM-YYYY");
+          const bookingToDate = moment(booking.todate, "DD-MM-YYYY");
+          const requestedFromDate = moment(fromdate, "DD-MM-YYYY");
+          const requestedToDate = moment(todate, "DD-MM-YYYY");
+
+          return (
+            requestedToDate.isBefore(bookingFromDate) ||
+            requestedFromDate.isAfter(bookingToDate)
+          );
+        });
+      });
+    }
+
+    // Filter by search term
+    if (search) {
+      tempRooms = tempRooms.filter((room) =>
+        room.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    // Filter by type
+    if (type && type !== "all") {
+      tempRooms = tempRooms.filter(
+        (room) =>
+          room.roomtype && room.roomtype.toLowerCase() === type.toLowerCase()
+      );
+    }
+
+    setFilteredRooms(tempRooms);
+  };
+
+  useEffect(() => {
+    filterRooms();
+  }, [search, type, fromdate, todate]);
 
   return (
     <div className="container mx-auto p-5">
@@ -29,24 +98,30 @@ const Home = () => {
                 format="DD-MM-YYYY"
                 onChange={(dates) => {
                   if (dates && dates.length === 2) {
-                    setFromDate(dates[0].format("DD-MM-YYYY"));
-                    setToDate(dates[1].format("DD-MM-YYYY"));
+                    setFromdate(dates[0].format("DD-MM-YYYY"));
+                    setTodate(dates[1].format("DD-MM-YYYY"));
                   } else {
-                    setFromDate("");
-                    setToDate("");
+                    setFromdate("");
+                    setTodate("");
                   }
                 }}
               />
             </div>
             <div className="w-full md:w-auto">
               <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 className="w-full h-10 px-4 rounded-lg text-gray-800"
                 placeholder="Search Rooms"
               />
             </div>
             <div className="w-full md:w-auto">
-              <select className="w-full h-10 px-4 rounded-lg text-gray-800">
+              <select
+                className="w-full h-10 px-4 rounded-lg text-gray-800"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
                 <option value="all">All</option>
                 <option value="delux">Delux</option>
                 <option value="suite">Suite</option>
@@ -57,44 +132,27 @@ const Home = () => {
       </div>
 
       <div className="mt-10">
-        {/* Replace with static data for rooms */}
+        {loading && <h1 className="text-center text-xl">Loading...</h1>}
+        {error && (
+          <h1 className="text-center text-xl text-red-600">
+            Error loading rooms
+          </h1>
+        )}
+        {filteredRooms && filteredRooms.length === 0 && (
+          <h1 className="text-center text-xl">
+            No rooms found matching your criteria
+          </h1>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-          <div className="border p-4 rounded-lg">
-            <img
-              src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
-              alt="Delux Room"
-              className="w-full h-40 object-cover rounded-lg mb-4"
-            />
-            <h2 className="text-2xl font-bold">Delux Room</h2>
-            <p className="text-gray-600">Delux</p>
-            <p className="text-lg text-gray-900 font-semibold">
-              2000 Baht/night
-            </p>
-          </div>
-          <div className="border p-4 rounded-lg">
-            <img
-              src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
-              alt="Suite Room"
-              className="w-full h-40 object-cover rounded-lg mb-4"
-            />
-            <h2 className="text-2xl font-bold">Delux Room</h2>
-            <p className="text-gray-600">Delux</p>
-            <p className="text-lg text-gray-900 font-semibold">
-              3000 Baht/night
-            </p>
-          </div>
-          <div className="border p-4 rounded-lg">
-            <img
-              src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
-              alt="President Room"
-              className="w-full h-40 object-cover rounded-lg mb-4"
-            />
-            <h2 className="text-2xl font-bold">Delux Room</h2>
-            <p className="text-gray-600">Delux</p>
-            <p className="text-lg text-gray-900 font-semibold">
-              5000 Baht/night
-            </p>
-          </div>
+          {filteredRooms &&
+            filteredRooms.map((room, index) => (
+              <Room
+                key={index}
+                room={room}
+                fromdate={fromdate}
+                todate={todate}
+              />
+            ))}
         </div>
       </div>
     </div>

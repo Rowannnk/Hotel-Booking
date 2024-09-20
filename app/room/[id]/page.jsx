@@ -1,37 +1,54 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation"; // to get roomid from the route params
 
-const RoomDetails = () => {
-  const roomid = "123"; // Static room id for demonstration
+const RoomDetails = ({ params }) => {
+  const { id } = params; // Get room ID from Next.js dynamic route
   const [room, setRoom] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [mainImage, setMainImage] = useState("");
 
   useEffect(() => {
-    // Simulated room data
-    const simulatedRoomData = {
-      id: roomid,
-      name: "Deluxe Room",
-      imgurls: [
-        "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
-        "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
-        "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
-      ],
-      maxpeople: 3,
-      rentperday: 1500,
-      roomtype: "Suite",
-      phonenumber: "123-456-7890",
-      description: "A spacious and luxurious room with all modern amenities.",
+    // Simulating room data fetching without an API
+    const fetchRoomDetails = () => {
+      try {
+        setLoading(true);
+        const roomData = {
+          id: id,
+          name: "Deluxe Room",
+          maxpeople: 4,
+          rentperday: 1500,
+          roomtype: "Deluxe",
+          phonenumber: "+66 123 4567",
+          description:
+            "A luxurious room with all the modern amenities and stunning views of the city.",
+          imgurls: [
+            "https://via.placeholder.com/600x400/FF5733",
+            "https://via.placeholder.com/600x400/33FF57",
+            "https://via.placeholder.com/600x400/3357FF",
+          ],
+        };
+        setRoom(roomData);
+        setMainImage(roomData.imgurls[0]); // Set the first image as the main image
+      } catch (err) {
+        console.error("Error fetching room details:", err);
+        setError("Failed to load room details.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setRoom(simulatedRoomData);
-    setMainImage(simulatedRoomData.imgurls[0]);
-  }, [roomid]);
+    fetchRoomDetails();
+  }, [id]);
 
   const handleThumbnailClick = (url) => {
     setMainImage(url);
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
   if (!room) return <div>No room details found.</div>;
 
   return (
