@@ -1,37 +1,31 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation"; // to get roomid from the route params
+import { useRouter } from "next/navigation";
+import { FaUsers, FaMoneyBillWave, FaBed, FaPhone } from "react-icons/fa";
+import { MdArrowBack } from "react-icons/md";
+import Loading from "@/components/Loading";
+import Error from "@/components/Error";
 
 const RoomDetails = ({ params }) => {
-  const { id } = params; // Get room ID from Next.js dynamic route
+  const { id } = params;
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mainImage, setMainImage] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    // Simulating room data fetching without an API
-    const fetchRoomDetails = () => {
+    const fetchRoomDetails = async () => {
       try {
         setLoading(true);
-        const roomData = {
-          id: id,
-          name: "Deluxe Room",
-          maxpeople: 4,
-          rentperday: 1500,
-          roomtype: "Deluxe",
-          phonenumber: "+66 123 4567",
-          description:
-            "A luxurious room with all the modern amenities and stunning views of the city.",
-          imgurls: [
-            "https://via.placeholder.com/600x400/FF5733",
-            "https://via.placeholder.com/600x400/33FF57",
-            "https://via.placeholder.com/600x400/3357FF",
-          ],
-        };
+        const response = await fetch(`/api/room/rooms/${id}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const roomData = await response.json();
         setRoom(roomData);
-        setMainImage(roomData.imgurls[0]); // Set the first image as the main image
+        setMainImage(roomData.imgurls[0]);
       } catch (err) {
         console.error("Error fetching room details:", err);
         setError("Failed to load room details.");
@@ -47,82 +41,108 @@ const RoomDetails = ({ params }) => {
     setMainImage(url);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-  if (!room) return <div>No room details found.</div>;
+  const handleGoBack = () => {
+    router.push("/");
+  };
+
+  if (loading) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Error />
+      </div>
+    );
+  }
+  if (!room) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        No room details found.
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex">
-        {/* Thumbnails */}
-        <div className="w-1/4 mr-4 flex flex-col gap-4 h-[650px]">
+    <div className="mx-auto p-6 mt-20 bg-gradient-to-r from-blue-50 to-purple-50">
+      {/* Image Section */}
+      <div className="flex flex-col items-center">
+        <img
+          src={mainImage}
+          alt={room.name}
+          className="w-full max-w-4xl h-[500px] object-cover rounded-lg shadow-lg mb-6"
+        />
+        <div className="flex gap-2 mt-4">
           {room.imgurls.map((url, index) => (
             <img
               key={index}
               src={url}
               alt={`Thumbnail ${index}`}
-              className={`w-full h-[140px] object-cover cursor-pointer rounded transition-transform transform hover:scale-105 ${
-                url === mainImage ? "border-2 border-blue-500" : ""
+              className={`w-[100px] h-[100px] object-cover cursor-pointer rounded-lg transition-transform hover:scale-105 ${
+                url === mainImage ? "border-4 border-indigo-500" : "border"
               }`}
               onClick={() => handleThumbnailClick(url)}
             />
           ))}
         </div>
-        {/* Large Main Image */}
-        <div className="flex-1">
-          <img
-            src={mainImage}
-            alt={room.name}
-            className="w-full h-[450px] object-cover"
-          />
+      </div>
+
+      {/* Room Information Section */}
+      <div className="mt-8 max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-4xl font-bold text-indigo-600 mb-4 text-center">
+          {room.name}
+        </h2>
+        <div className="space-y-4 mt-4">
+          <div className="flex items-center">
+            <FaUsers className="text-indigo-500 mr-3" />
+            <span className="text-lg font-medium">
+              Max People: {room.maxpeople}
+            </span>
+          </div>
+          <div className="flex items-center">
+            <FaMoneyBillWave className="text-green-500 mr-3" />
+            <span className="text-lg font-medium">
+              Price: {room.rentperday} THB
+            </span>
+          </div>
+          <div className="flex items-center">
+            <FaBed className="text-purple-500 mr-3" />
+            <span className="text-lg font-medium">
+              Room Type: {room.roomtype}
+            </span>
+          </div>
+          <div className="flex items-center">
+            <FaPhone className="text-yellow-500 mr-3" />
+            <span className="text-lg font-medium">
+              Phone Number: {room.phonenumber}
+            </span>
+          </div>
+        </div>
+
+        {/* Description Section */}
+        <div className="mt-6">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+            Description
+          </h3>
+          <p className="text-gray-600 bg-gray-100 p-4 rounded-lg shadow-inner">
+            {room.description}
+          </p>
         </div>
       </div>
-      <div className="-mt-40">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Column 1: Room Details */}
-          <div>
-            <h2 className="text-2xl font-extrabold mb-4 text-gray-800">
-              {room.name}
-            </h2>
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <span className="text-[#a08448] font-semibold w-32">
-                  Max People:
-                </span>
-                <span className="text-gray-700">{room.maxpeople}</span>
-              </div>
-              <hr className="border-t border-gray-300 mb-2" />
-              <div className="flex items-center">
-                <span className="text-[#a08448] font-semibold w-32">
-                  Price:
-                </span>
-                <span className="text-gray-700">{room.rentperday} THB</span>
-              </div>
-              <hr className="border-t border-gray-300 mb-2" />
-              <div className="flex items-center">
-                <span className="text-[#a08448] font-semibold w-32">
-                  Room Type:
-                </span>
-                <span className="text-gray-700">{room.roomtype}</span>
-              </div>
-              <hr className="border-t border-gray-300 mb-2" />
-              <div className="flex items-center">
-                <span className="text-[#a08448] font-semibold w-32">
-                  Phone Number:
-                </span>
-                <span className="text-gray-700">{room.phonenumber}</span>
-              </div>
-              <hr className="border-t border-gray-300 mb-2" />
-            </div>
-          </div>
-          {/* Column 2: Description */}
-          <div>
-            <h3 className="text-2xl font-semibold mb-4 text-gray-800">
-              Description
-            </h3>
-            <p className="text-gray-700">{room.description}</p>
-          </div>
-        </div>
+
+      {/* Back Button */}
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center px-6 py-3 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition"
+        >
+          <MdArrowBack className="mr-2" /> Back to Home
+        </button>
       </div>
     </div>
   );

@@ -19,16 +19,18 @@ const Room = ({ room, fromdate, todate }) => {
         {/* Room Details */}
         <div className="p-6 space-y-4 flex-grow">
           <div className="flex justify-between items-center border-b pb-2">
-            <span className="text-[#a08448] font-semibold">Max People</span>
-            <span className="text-gray-700">{room.maxpeople}</span>
+            <span className="text-[#734b6d] font-semibold">Max People</span>
+            <span className="text-[#734b6d]">{room.maxpeople}</span>
           </div>
           <div className="flex justify-between items-center border-b pb-2">
-            <span className="text-[#a08448] font-semibold">Price</span>
-            <span className="text-gray-700">{room.rentperday} THB</span>
+            <span className="text-[#42275a] font-semibold">
+              Price Per Night
+            </span>
+            <span className="text-[#734b6d]">{room.rentperday} THB</span>
           </div>
           <div className="flex justify-between items-center border-b pb-2">
-            <span className="text-[#a08448] font-semibold">Room Type</span>
-            <span className="text-gray-700">{room.roomtype}</span>
+            <span className="text-[#42275a] font-semibold">Room Type</span>
+            <span className="text-[#734b6d]">{room.roomtype}</span>
           </div>
         </div>
 
@@ -36,7 +38,7 @@ const Room = ({ room, fromdate, todate }) => {
         <div className="flex justify-center items-center py-4">
           {fromdate && todate && (
             <Link href={`/booking/${room._id}/${fromdate}/${todate}`} passHref>
-              <span className="text-center bg-[#a08448] hover:bg-[#8c7240] text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
+              <span className="text-center bg-[#734b6d] hover:bg-[#42275a] text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
                 Book Now
               </span>
             </Link>

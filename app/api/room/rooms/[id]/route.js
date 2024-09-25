@@ -1,17 +1,15 @@
-// pages/api/room/rooms/[roomid].js
-
-import { Rooms } from "@/app/models/room"; // Adjust the import according to your setup
 import { NextResponse } from "next/server";
+import { Rooms } from "@/app/models/room"; // Adjust the import path according to your setup
 
 export async function GET(req, { params }) {
-  const { roomid } = params;
+  const { id } = params; // Extract room ID from the params
 
   try {
-    const room = await Rooms.findById(roomid); // Adjust according to your database query method
+    const room = await Rooms.findById(id); // Fetch room by ID from the database
     if (!room) {
       return NextResponse.json({ message: "Room not found" }, { status: 404 });
     }
-    return NextResponse.json(room);
+    return NextResponse.json(room); // Return the room details as JSON
   } catch (error) {
     console.error("Error fetching room:", error);
     return NextResponse.json(

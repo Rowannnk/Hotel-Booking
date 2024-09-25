@@ -1,61 +1,89 @@
-import { Users } from "@/app/models/user";
-import { Bookings } from "@/app/models/booking";
+// pages/api/bookroom.js
 import { NextResponse } from "next/server";
-// import Stripe from "stripe";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
+import Stripe from "stripe";
+import dbConnect from "@/libs/mongodb";
+import { Bookings } from "@/app/models/booking";
+import { Rooms } from "@/app/models/room";
 
-// const stripe = new Stripe(
-//   "sk_test_51PtqEvRtSzM7gc69q8IvVrCyzAOTJcWq8Rnw2aJn7X0DbrboC48gAG6f4d4ixIXyTryGoKUsqyovC1ncsouxxmiD00RfjVkfJQ"
-// );
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
-  const body = await request.json();
-  const {
-    userid,
-    room,
-    roomid,
-    fromdate,
-    todate,
-    totalAmount,
-    totalDays,
-    transitionId,
-  } = body;
+  const { room, userid, fromdate, todate, totalAmount, totalDays, token } =
+    await request.json();
 
   try {
-    // Check if the user exists and is not an admin
-    const user = await Users.findById(userid);
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-    if (user.isAdmin) {
-      return NextResponse.json(
-        { message: "Permission denied: Admins cannot create bookings" },
-        { status: 403 }
-      );
-    }
+    await dbConnect();
 
-    // Create a new booking
-    const newBooking = new Bookings({
-      room,
-      roomid,
-      userid,
-      fromdate,
-      todate,
-      totalAmount,
-      totalDays,
-      transitionId,
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id,
     });
 
-    await newBooking.save();
-    return NextResponse.json(
-      { message: "Booking created successfully" },
-      { status: 201 }
+    const payment = await stripe.charges.create(
+      {
+        amount: totalAmount * 100,
+        customer: customer.id,
+        currency: "THB",
+        receipt_email: token.email,
+      },
+      {
+        idempotencyKey: uuidv4(),
+      }
     );
+
+    if (payment) {
+      if (
+        !room ||
+        !room._id ||
+        !userid ||
+        !fromdate ||
+        !todate ||
+        !totalAmount ||
+        !totalDays
+      ) {
+        return NextResponse.json(
+          { message: "Missing required fields" },
+          { status: 400 }
+        );
+      }
+
+      // Create a new booking
+      const newBooking = new Bookings({
+        room: room.name,
+        roomid: room._id,
+        userid,
+        fromdate,
+        todate,
+        totalAmount,
+        totalDays,
+        transitionId: payment.id, // Use the payment ID as the transition ID
+      });
+
+      const booking = await newBooking.save();
+
+      // Update current bookings for the room
+      const roomTemp = await Rooms.findOne({ _id: room._id });
+      roomTemp.currentbookings.push({
+        bookingid: booking._id,
+        fromdate,
+        todate,
+        userid,
+        status: booking.status,
+      });
+
+      await roomTemp.save();
+
+      return NextResponse.json(
+        { message: "Room Booked Successfully", booking },
+        { status: 200 }
+      );
+    }
   } catch (error) {
-    console.error("Booking creation error:", error);
+    console.error("Booking error:", error);
     return NextResponse.json(
-      { message: "Booking creation failed", error: error.message },
-      { status: 400 }
+      { message: "Booking failed", error: error.message },
+      { status: 500 }
     );
   }
 }

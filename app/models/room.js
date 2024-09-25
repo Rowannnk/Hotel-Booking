@@ -22,10 +22,8 @@ const roomSchema = mongoose.Schema(
       type: [String], // Define as an array of strings
       required: true,
     },
-    currentbookings: {
-      type: [Date], // Assume it's an array of booking dates
-      default: [],
-    },
+    currentbookings: [Object],
+
     roomtype: {
       type: String,
       required: true,
