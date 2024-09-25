@@ -4,20 +4,25 @@ import { Tabs } from "antd";
 import axios from "axios";
 import swal from "sweetalert";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import Loading from "@/components/Loading";
+import Error from "@/components/Error";
 
 const Admin = () => {
-  //   useEffect(() => {
-  //     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  //     if (!currentUser || !currentUser.isAdmin) {
-  //       window.location.href = "/"; // Redirect if not an admin
-  //     }
-  //   }, []);
+    if (!currentUser || !currentUser.isAdmin) {
+      window.location.href = "/";
+    }
+  }, []);
 
   return (
-    <div className="ml-3 mt-3 mr-3">
-      <h1 className="text-center  text-3xl">Admin Panel</h1>
+    <div className=" mt-20  bg-gradient-to-r from-blue-50 to-purple-50">
+      <h1 className="text-center text-3xl pt-10 text-[#42275a]">
+        ADMIN DASHBOARD
+      </h1>
       <Tabs
+        className="bg-gradient-to-r from-blue-50 to-purple-50 px-3"
         defaultActiveKey="1"
         items={[
           { label: "Bookings", key: "1", children: <Bookings /> },
@@ -51,15 +56,27 @@ const Bookings = () => {
 
     fetchData();
   }, []);
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Error />
+      </div>
+    );
+  }
 
   return (
-    <div className="row">
-      <div className="col-md-12">
-        {loading && <p>Loading...</p>}
-        {error && <p>There was an error loading bookings.</p>}
-        <table className="min-w-full bg-white border-collapse">
+    <div className="row ">
+      <div className="col-md-12 ">
+        <table className="min-w-full bg-gradient-to-r from-blue-50 to-purple-50 border-collapse">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-blue-200">
               <th className="p-3 border-b text-left">Booking ID</th>
               <th className="p-3 border-b text-left">User ID</th>
               <th className="p-3 border-b text-left">Room</th>
@@ -159,15 +176,27 @@ const Rooms = () => {
     );
     setEditingRoom(null);
   };
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Error />
+      </div>
+    );
+  }
 
   return (
     <div className="row">
       <div className="col-md-12">
-        {loading && <p>Loading...</p>}
-        {error && <p>There was an error loading rooms.</p>}
-        <table className="min-w-full bg-white border-collapse">
+        <table className="min-w-full bg-gradient-to-r from-blue-50 to-purple-50 border-collapse">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-blue-200">
               <th className="p-3 border-b text-left">Room ID</th>
               <th className="p-3 border-b text-left">Name</th>
               <th className="p-3 border-b text-left">Type</th>
@@ -190,13 +219,13 @@ const Rooms = () => {
                         className="text-blue-500 hover:text-blue-700 mr-2"
                         onClick={() => handleEdit(room)}
                       >
-                        Edit
+                        <FaEdit />
                       </button>
                       <button
                         className="text-red-500 hover:text-red-700"
                         onClick={() => deleteRoom(room._id)}
                       >
-                        Delete
+                        <FaTrash />
                       </button>
                     </td>
                   </tr>
@@ -244,14 +273,27 @@ const Users = () => {
     fetchData();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Error />
+      </div>
+    );
+  }
+
   return (
     <div className="row">
       <div className="col-md-12">
-        {loading && <p>Loading...</p>}
-        {error && <p>There was an error loading users.</p>}
-        <table className="min-w-full bg-white border-collapse">
+        <table className="min-w-full bg-gradient-to-r from-blue-50 to-purple-50 border-collapse">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-blue-200">
               <th className="p-3 border-b text-left">User ID</th>
               <th className="p-3 border-b text-left">Name</th>
               <th className="p-3 border-b text-left">Email</th>
@@ -354,14 +396,14 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#42275a] to-[#734b6d]">
-      <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-lg p-6 shadow-lg border border-gray-700 w-11/12 md:w-4/5 lg:w-3/5">
-        <h2 className="text-3xl font-semibold text-center text-white mb-4">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-purple-50">
+      <div className="bg-white bg-opacity-80 rounded-lg p-8 shadow-lg w-11/12 md:w-4/5 lg:w-3/5">
+        <h2 className="text-3xl font-semibold text-center text-[#42275a] mb-4">
           {room ? "Edit Room" : "Add Room"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300" htmlFor="name">
+            <label className="block mb-2 text-[#42275a]" htmlFor="name">
               Room Name
             </label>
             <input
@@ -370,11 +412,11 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="border border-gray-500 bg-transparent rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              className="border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300" htmlFor="roomtype">
+            <label className="block mb-2 text-[#42275a]" htmlFor="roomtype">
               Room Type
             </label>
             <input
@@ -383,11 +425,11 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
               value={formData.roomtype}
               onChange={handleChange}
               required
-              className="border border-gray-500 bg-transparent rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              className="border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300" htmlFor="rentperday">
+            <label className="block mb-2 text-[#42275a]" htmlFor="rentperday">
               Rent Per Day
             </label>
             <input
@@ -396,24 +438,24 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
               value={formData.rentperday}
               onChange={handleChange}
               required
-              className="border border-gray-500 bg-transparent rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              className="border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300" htmlFor="maxpeople">
+            <label className="block mb-2 text-[#42275a]" htmlFor="maxpeople">
               Max People
             </label>
             <input
-              type="number"
+              type="text"
               name="maxpeople"
-              value={formData.maxpeople}
+              value={formData.maxpeople || ""}
               onChange={handleChange}
               required
-              className="border border-gray-500 bg-transparent rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              className="border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300" htmlFor="phonenumber">
+            <label className="block mb-2 text-[#42275a]" htmlFor="phonenumber">
               Phone Number
             </label>
             <input
@@ -422,11 +464,11 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
               value={formData.phonenumber}
               onChange={handleChange}
               required
-              className="border border-gray-500 bg-transparent rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              className="border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300" htmlFor="description">
+            <label className="block mb-2 text-[#42275a]" htmlFor="description">
               Description
             </label>
             <textarea
@@ -434,11 +476,11 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
               value={formData.description}
               onChange={handleChange}
               required
-              className="border border-gray-500 bg-transparent rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              className="border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-300">Image URLs</label>
+            <label className="block mb-2 text-[#42275a]">Image URLs</label>
             {formData.imgurls.map((imgurl, index) => (
               <input
                 key={index}
@@ -447,13 +489,13 @@ const AddRoom = ({ room, setEditingRoom, updateRoom }) => {
                 value={imgurl}
                 onChange={handleChange}
                 placeholder={`Image URL ${index + 1}`}
-                className="border border-gray-500 bg-transparent rounded p-3 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                className="border border-gray-300 rounded p-3 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-[#734b6d] text-gray-800"
               />
             ))}
           </div>
           <button
             type="submit"
-            className="bg-purple-600 text-white rounded p-3 w-full hover:bg-purple-700 transition duration-300"
+            className="bg-[#734b6d] text-white rounded p-3 w-full hover:bg-[#42275a] transition duration-300"
           >
             {room ? "Update Room" : "Add Room"}
           </button>

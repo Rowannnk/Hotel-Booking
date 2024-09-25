@@ -1,64 +1,85 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // Use Next.js router
+import { useRouter } from "next/navigation"; 
+import Loading from "@/components/Loading";
+import Error from "@/components/Error";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const router = useRouter(); // Initialize Next.js router
+  const router = useRouter(); 
 
   const login = async () => {
     const user = { email, password };
 
     try {
       setLoading(true);
-      const response = await axios.post("/api/user/login", user); // Next.js API route
+      const response = await axios.post("/api/user/login", user); 
       const result = response.data;
-      setLoading(false);
 
-      localStorage.setItem("currentUser", JSON.stringify(result));
+      // Ensure result contains the user ID
+      if (result && result._id) {
+        localStorage.setItem("currentUser", JSON.stringify(result));
+      } else {
+        throw new Error("User ID not found in response");
+      }
+
+      setLoading(false);
       setEmail("");
       setPassword("");
 
-      router.push("/"); // Navigate to the home page after login
+      router.push("/"); 
     } catch (error) {
       setLoading(false);
       setError(true);
       console.error("Login error:", error);
     }
   };
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Error />
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-gray-100 p-8 h-screen">
-      <div className="max-w-[50%]  mx-auto bg-white p-8 rounded-lg">
-        {loading && <p className="text-center text-red-500">Loading...</p>}
-        {error && <p className="text-center text-red-500">Login failed...</p>}
+    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 h-screen flex items-center justify-center">
+      <div className="max-w-lg w-full bg-gradient-to-r from-blue-50 to-purple-100 p-10 rounded-2xl shadow-lg">
+        <h2 className="text-3xl font-extrabold mb-6 text-center text-indigo-700">
+          Login
+        </h2>
 
-        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
-
-        <div className="grid grid-cols-1 gap-4">
-          <div className="flex flex-col mb-4">
-            <label className="text-sm font-medium text-gray-700 mb-1">
+        <div className="grid grid-cols-1 gap-6">
+          <div className="flex flex-col">
+            <label className="text-lg font-medium text-gray-700 mb-2">
               Email
             </label>
             <input
               type="email"
-              className="p-2 border-b-2 border-gray-300 focus:outline-none focus:border-[#a08448]"
+              className="p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="flex flex-col mb-4">
-            <label className="text-sm font-medium text-gray-700 mb-1">
+          <div className="flex flex-col">
+            <label className="text-lg font-medium text-gray-700 mb-2">
               Password
             </label>
             <input
               type="password"
-              className="p-2 border-b-2 border-gray-300 focus:outline-none focus:border-[#a08448]"
+              className="p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -68,7 +89,7 @@ const Login = () => {
 
         <button
           onClick={login}
-          className="w-full bg-[#a08448] text-white py-2 px-4 rounded hover:bg-[#8b6d40]"
+          className="w-full mt-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300"
         >
           Login
         </button>

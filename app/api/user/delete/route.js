@@ -1,22 +1,37 @@
-import { Users } from '@/app/models/user';
-import { NextResponse } from 'next/server';
+import { Users } from "@/app/models/user";
+import dbConnect from "@/libs/mongodb";
 
-export async function DELETE(request) {
-    const body = await request.json();
-    const { userid } = body;
+export async function DELETE(req) {
+  try {
+    const { userId } = await req.json();
 
-    try {
-        // Check if the user exists
-        const user = await Users.findById(userid);
-        if (!user) {
-            return NextResponse.json({ message: 'User not found' }, { status: 404 });
-        }
-
-        // Delete the user
-        await Users.findByIdAndDelete(userid);
-        return NextResponse.json({ message: 'User account deleted successfully' }, { status: 200 });
-    } catch (error) {
-        console.error('Account deletion error:', error);  // Log detailed error
-        return NextResponse.json({ message: 'Account deletion failed', error: error.message }, { status: 500 });
+    if (!userId) {
+      return new Response(JSON.stringify({ message: "User ID is required." }), {
+        status: 400,
+      });
     }
+
+    await dbConnect();
+
+    // Find and delete the user by their ID
+    const deleteUser = await Users.findByIdAndDelete(userId);
+
+    if (!deleteUser) {
+      return new Response(JSON.stringify({ message: "User not found." }), {
+        status: 404,
+      });
+    }
+
+    return new Response(
+      JSON.stringify({ message: "User successfully deleted." }),
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return new Response(JSON.stringify({ message: "Internal Server Error." }), {
+      status: 500,
+    });
+  }
 }

@@ -1,8 +1,10 @@
-"use client"; // Ensures that this component is rendered on the client side
+"use client";
 
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
+import Error from "@/components/Error";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -10,7 +12,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // Update error state to store error details
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const register = async () => {
@@ -19,12 +21,12 @@ const Register = () => {
       return;
     }
 
-    const user = { name, email, password }; // Do not include confirmPassword
+    const user = { name, email, password };
 
     try {
       setLoading(true);
       const response = await axios.post("/api/user/register", user);
-      console.log(response.data); // Log the response data for debugging
+      console.log(response.data);
       setLoading(false);
       setName("");
       setEmail("");
@@ -32,21 +34,34 @@ const Register = () => {
       setConfirmPassword("");
       router.push("/login");
     } catch (error) {
-      console.error(error.response?.data || error.message); // Log the error response or message
+      console.error(error.response?.data || error.message);
       setLoading(false);
-      setError(error.response?.data?.message || "An error occurred"); // Show specific error message
+      setError(error.response?.data?.message || "An error occurred");
     }
   };
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="mt-20 flex items-center justify-center h-screen">
+        <Error />
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-gray-100 p-8 h-screen">
-      <div className="max-w-[50%] mx-auto bg-white p-8 rounded-lg">
-        {loading && <p className="text-center text-red-500">Loading...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
+    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 h-screen flex items-center justify-center">
+      <div className="max-w-lg w-full bg-gradient-to-r from-blue-50 to-purple-100 p-10 rounded-2xl shadow-lg">
+        <h2 className="text-3xl font-extrabold mb-6 text-center text-indigo-700">
+          Register
+        </h2>
 
-        <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
-
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-6">
           {[
             {
               label: "Name",
@@ -76,13 +91,13 @@ const Register = () => {
             },
           ].map(
             ({ label, value, setter, placeholder, type = "text" }, index) => (
-              <div key={index} className="flex flex-col mb-4">
-                <label className="text-sm font-medium text-gray-700 mb-1">
+              <div key={index} className="flex flex-col">
+                <label className="text-lg font-medium text-gray-700 mb-2">
                   {label}
                 </label>
                 <input
                   type={type}
-                  className="p-2 border-b-2 border-gray-300 focus:outline-none focus:border-[#a08448]"
+                  className="p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
                   placeholder={placeholder}
                   value={value}
                   onChange={(e) => setter(e.target.value)}
@@ -94,7 +109,7 @@ const Register = () => {
 
         <button
           onClick={register}
-          className="w-full bg-[#a08448] text-white py-2 px-4 rounded hover:bg-[#8b6d40]"
+          className="w-full mt-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300"
         >
           Register
         </button>
