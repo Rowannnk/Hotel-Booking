@@ -124,7 +124,7 @@ const Home = () => {
                 onChange={(e) => setType(e.target.value)}
               >
                 <option value="all">All</option>
-                <option value="delux">Delux</option>
+                <option value="deluxe">Deluxe</option>
                 <option value="suite">Suite</option>
               </select>
             </div>
