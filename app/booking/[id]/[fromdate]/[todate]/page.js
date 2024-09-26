@@ -100,12 +100,12 @@ const Booking = ({ params }) => {
               <h3 className="font-semibold text-lg">Hotel Details</h3>
               <hr className="border-t border-gray-300 my-2" />
               <div className="grid grid-cols-2 gap-4">
-                <p>Nigga View Resort</p>
-                <p>123 Nigga Route</p>
-                <p>Beautiful Nigga Valley, 6969696</p>
+                <p>Hotel Deluna</p>
+                <p>Deluna Route</p>
+                <p>Beautiful Avenue Valley, 123456789</p>
                 <p>(969) 786-786</p>
-                <p>reservations@niggiaview.com</p>
-                <p>www.niggaview.com</p>
+                <p>reservations@deluna.com</p>
+                <p>www.deluna.com</p>
               </div>
             </div>
           </div>
