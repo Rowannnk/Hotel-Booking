@@ -119,7 +119,7 @@ const Home = () => {
               />
 
               <select
-                className="w-full md:w-auto px-4 py-3 rounded-lg bg-white text-gray-800 shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400"
+                className="w-full md:w-auto px-5 py-3 rounded-lg bg-white text-gray-800 shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400"
                 value={type}
                 onChange={(e) => setType(e.target.value)}
               >
