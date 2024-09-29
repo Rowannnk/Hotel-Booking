@@ -1,10 +1,10 @@
 # Project Name : Hotel Booking System
 
-## Project Link 
-https://hotel-booking-woad.vercel.app/
+## 🌐 Our Website
+https://hotel-booking-woad.vercel.app/ 
 
 
-## Source Code
+## 💻 Source Code
 https://github.com/Rowannnk/Hotel-Booking.git
 
 
@@ -14,17 +14,17 @@ https://github.com/Rowannnk/Hotel-Booking.git
 - May Thazin Myo - https://github.com/May8895
 
  
-# Project Description
+## Project Description
   This project is a hotel booking website allowing users to browse and book rooms, as well as manage their accounts, while providing admins with the ability to handle room listings and bookings. Users must first register and log in to access the system, after which they can search for rooms by name or filter by type. Clicking on a room displays detailed information, and users can update their profile or delete their account, though account deletion is only possible if they have no active bookings. If bookings exist, users must cancel them before account deletion is allowed. On the admin side, admins have access to a dashboard where they can view registered users and manage rooms. Admins can add new rooms, update room details, or delete room listings as needed. For booking management, users can select their preferred dates and proceed with payment via the Stripe payment gateway. Upon successful booking, users receive a confirmation, and their booking details are displayed in their profile. Users can update or cancel bookings, with canceled bookings being removed from the database but stored locally for reference in their profile.
 
  
-## 🛠️ Techn Stack
+## 🛠️ Tech Stack
 - Framework: Next.js(Frontend & Backend) with Tailwind Css
 - Database: MongoDB
 - Payment Integration: Stripe API
 
  
-## 🚀 How to Use
+## 🚀 How to Use our Website
 - Register and log in as a user to view and book rooms.
 - Search for rooms by name or filter by type, then view the room details.
 - Admin accounts allow you to manage room listings through the admin panel.
