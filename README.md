@@ -1,17 +1,24 @@
-# 👥 Contributors
+# Project Name : Hotel Booking System
 
- 
-## Project Name : Hotel Booking System
-- Min Khant Kyaw(6511498) - https://github.com/Rowannnk
-- Htet Aung Shine(6530145) - https://github.com/HtetAungShine6
-- May Thazin Myo(6511335) - https://github.com/May8895
+## Project Link 
+https://hotel-booking-woad.vercel.app/
+
+
+## Source Code
+https://github.com/Rowannnk/Hotel-Booking.git
+
+
+## 👥 Contributors
+- Min Khant Kyaw - https://github.com/Rowannnk
+- Htet Aung Shine - https://github.com/HtetAungShine6
+- May Thazin Myo - https://github.com/May8895
 
  
 # Project Description
   This project is a hotel booking website allowing users to browse and book rooms, as well as manage their accounts, while providing admins with the ability to handle room listings and bookings. Users must first register and log in to access the system, after which they can search for rooms by name or filter by type. Clicking on a room displays detailed information, and users can update their profile or delete their account, though account deletion is only possible if they have no active bookings. If bookings exist, users must cancel them before account deletion is allowed. On the admin side, admins have access to a dashboard where they can view registered users and manage rooms. Admins can add new rooms, update room details, or delete room listings as needed. For booking management, users can select their preferred dates and proceed with payment via the Stripe payment gateway. Upon successful booking, users receive a confirmation, and their booking details are displayed in their profile. Users can update or cancel bookings, with canceled bookings being removed from the database but stored locally for reference in their profile.
 
  
-## 🛠️ Technology Stack
+## 🛠️ Techn Stack
 - Framework: Next.js(Frontend & Backend) with Tailwind Css
 - Database: MongoDB
 - Payment Integration: Stripe API
@@ -23,7 +30,7 @@
 - Admin accounts allow you to manage room listings through the admin panel.
 - Book a room by selecting the desired dates and completing the payment through Stripe.
 - View, update, or cancel your bookings in the Profile section.
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
 
 # User Journey 
 
@@ -40,7 +47,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ### Home
 <img width="1710" alt="Screenshot 2567-09-26 at 13 06 35" src="https://github.com/user-attachments/assets/0f2942e8-8ce6-4c30-8765-01b7b886d27b">
 
-### Search Room 
+### Search Available Rooms by date
 <img width="1710" alt="Screenshot 2567-09-26 at 13 09 19" src="https://github.com/user-attachments/assets/c8354693-8b28-4d8f-8d8a-3d9ff4be7d89">
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 09 33" src="https://github.com/user-attachments/assets/93a9570c-28b2-4225-b206-b1b80f28fb3b">
@@ -50,7 +57,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 07 07" src="https://github.com/user-attachments/assets/ba15468a-dd5f-4a36-ad2a-643d28850732">
 
-### Searcb by Room type 
+### Search by Room type 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 07 17" src="https://github.com/user-attachments/assets/aba4066a-2286-43e1-842d-c4eb952790c9">
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 07 26" src="https://github.com/user-attachments/assets/923a3b84-1a30-4eb1-8e86-1509c04994e6">
@@ -81,8 +88,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ### Cancel Booking 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 12 28" src="https://github.com/user-attachments/assets/743cbf8d-f065-4852-a7b6-1f144e1523ea">
 
-<img width="1710" alt="Screenshot 2567-09-26 at 13 12 36" src="https://github.com/user-attachments/assets/98a5e606-54d1-49c2-8351-c05652765326">
-
 <img width="1710" alt="Screenshot 2567-09-26 at 13 13 42" src="https://github.com/user-attachments/assets/ce9cfe4d-9d4d-460f-96fa-5f657d7ee105">
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 13 58" src="https://github.com/user-attachments/assets/370d9867-cf83-4e25-846f-314e0be69903">
@@ -98,6 +103,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 <img width="1710" alt="Screenshot 2567-09-26 at 13 12 21" src="https://github.com/user-attachments/assets/4682e588-1fd2-4422-b316-727129fa7652">
 
 ### Profile Delete 
+<img width="1710" alt="Screenshot 2567-09-26 at 13 12 36" src="https://github.com/user-attachments/assets/98a5e606-54d1-49c2-8351-c05652765326">
+
 <img width="1710" alt="Screenshot 2567-09-26 at 13 14 22" src="https://github.com/user-attachments/assets/220dbac4-f681-4377-b527-d14ec25b98ff">
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 14 29" src="https://github.com/user-attachments/assets/7eaf09ef-7850-4668-9804-7648719ccac8">
@@ -118,14 +125,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 15 51" src="https://github.com/user-attachments/assets/619fda63-ed82-4054-a6b1-ba1594534aeb">
 
+### Result in Home Page after editing room
+<img width="1710" alt="Screenshot 2567-09-26 at 13 19 12" src="https://github.com/user-attachments/assets/f9858e2b-98ee-4ecc-9c35-ab728dfa9742">
+
+### Delete Room
+<img width="1710" alt="Screenshot 2567-09-26 at 13 15 51" src="https://github.com/user-attachments/assets/619fda63-ed82-4054-a6b1-ba1594534aeb">
+
 <img width="1710" alt="Screenshot 2567-09-26 at 13 18 54" src="https://github.com/user-attachments/assets/3f083f05-3d16-4c1c-a55a-9df94d1be372">
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 18 59" src="https://github.com/user-attachments/assets/45396034-2bf9-4ed8-a3de-e1d72b5b2ce1">
 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 19 03" src="https://github.com/user-attachments/assets/49cee67e-b5b9-43eb-adcc-a1e2d566bdc6">
-
-### Result in Home Page after editing room
-<img width="1710" alt="Screenshot 2567-09-26 at 13 19 12" src="https://github.com/user-attachments/assets/f9858e2b-98ee-4ecc-9c35-ab728dfa9742">
 
 ### Users' Bookings 
 <img width="1710" alt="Screenshot 2567-09-26 at 13 18 37" src="https://github.com/user-attachments/assets/2d753549-77ab-43c7-abb7-2d760ae8c4c5">
