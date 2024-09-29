@@ -1,9 +1,9 @@
-👥 Contributors
+# 👥 Contributors
  
-Project Name : Hotel Booking System
-Min Khant Kyaw(6511498) - https://github.com/Rowannnk
-Htet Aung Shine(6530145) - https://github.com/HtetAungShine6
-May Thazin Myo(6511335) - https://github.com/May8895
+## Project Name : Hotel Booking System
+- Min Khant Kyaw(6511498) - https://github.com/Rowannnk
+- Htet Aung Shine(6530145) - https://github.com/HtetAungShine6
+- May Thazin Myo(6511335) - https://github.com/May8895
  
 Project Description
  
